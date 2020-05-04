@@ -42,7 +42,7 @@ def add_data(session, data):
                                  .filter(Drugs.pharm_class == classes).scalar()
     if not exists:
         sys.stdout.write(f"New data added: {generic_name}|{brand_name}|{routes}|{form}\n")
-        row = Drugs(generic_name=generic_name, brand_name=brand_name, route=routes, dosage_form=form pharm_class=classes)
+        row = Drugs(generic_name=generic_name, brand_name=brand_name, route=routes, dosage_form=form, pharm_class=classes)
         session.add(row)
     else:
         sys.stdout.write(f"Data already exists: {generic_name}|{brand_name}\n")
