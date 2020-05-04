@@ -1,0 +1,384 @@
+{
+    "meta": {
+      "last_updated": "2020-05-01",
+      "terms": "https://open.fda.gov/terms/",
+      "results": {
+        "skip": 0,
+        "total": 111502,
+        "limit": 111502
+      },
+      "license": "https://open.fda.gov/license/",
+      "disclaimer": "Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service."
+    },
+    "results": [
+      {
+        "marketing_start_date": "20021126",
+        "product_type": "HUMAN PRESCRIPTION DRUG",
+        "product_id": "0002-3229_f1ee27ad-c38e-430a-b027-0b7ebad7403e",
+        "marketing_category": "NDA",
+        "route": [
+          "ORAL"
+        ],
+        "generic_name": "Atomoxetine hydrochloride",
+        "openfda": {
+          "manufacturer_name": [
+            "Eli Lilly and Company"
+          ],
+          "unii": [
+            "57WVB6I2W0"
+          ],
+          "rxcui": [
+            "617945",
+            "608139",
+            "349592",
+            "349593",
+            "349591",
+            "349594",
+            "349595",
+            "352321",
+            "352320",
+            "617947",
+            "352317",
+            "352318",
+            "352319",
+            "608143"
+          ],
+          "spl_set_id": [
+            "309de576-c318-404a-bc15-660c2b1876fb"
+          ],
+          "upc": [
+            "0300023229304",
+            "0300023228307",
+            "0300023238306",
+            "0300023239303",
+            "0300023251305",
+            "0300023250308",
+            "0300023227300"
+          ],
+          "is_original_packager": [
+            true
+          ]
+        },
+        "brand_name": "Strattera",
+        "brand_name_base": "Strattera",
+        "labeler_name": "Eli Lilly and Company",
+        "packaging": [
+          {
+            "marketing_start_date": "20030110",
+            "sample": false,
+            "description": "30 CAPSULE in 1 BOTTLE (0002-3229-30)",
+            "package_ndc": "0002-3229-30"
+          }
+        ],
+        "active_ingredients": [
+          {
+            "strength": "40 mg/1",
+            "name": "ATOMOXETINE HYDROCHLORIDE"
+          }
+        ],
+        "product_ndc": "0002-3229",
+        "finished": true,
+        "spl_id": "f1ee27ad-c38e-430a-b027-0b7ebad7403e",
+        "pharm_class": [
+          "Norepinephrine Reuptake Inhibitor [EPC]",
+          "Norepinephrine Uptake Inhibitors [MoA]"
+        ],
+        "application_number": "NDA021411",
+        "listing_expiration_date": "20201231",
+        "dosage_form": "CAPSULE"
+      },
+      {
+        "marketing_start_date": "20170324",
+        "product_type": "HUMAN PRESCRIPTION DRUG",
+        "product_id": "71610-199_adbae6b7-14fd-4ce0-a7eb-2154805a2a16",
+        "marketing_category": "ANDA",
+        "route": [
+          "ORAL"
+        ],
+        "generic_name": "Lorazepam",
+        "openfda": {
+          "spl_set_id": [
+            "a4fa14be-cef1-4b4b-b099-abde92f15145"
+          ],
+          "manufacturer_name": [
+            "Aphena Pharma Solutions - Tennessee, LLC"
+          ],
+          "unii": [
+            "O26FZP769L"
+          ],
+          "rxcui": [
+            "197900"
+          ]
+        },
+        "brand_name": "Lorazepam",
+        "brand_name_base": "Lorazepam",
+        "labeler_name": "Aphena Pharma Solutions - Tennessee, LLC",
+        "packaging": [
+          {
+            "marketing_start_date": "20181127",
+            "sample": false,
+            "description": "150 TABLET in 1 BOTTLE (71610-199-75)",
+            "package_ndc": "71610-199-75"
+          },
+          {
+            "marketing_start_date": "20181127",
+            "sample": false,
+            "description": "180 TABLET in 1 BOTTLE (71610-199-80)",
+            "package_ndc": "71610-199-80"
+          },
+          {
+            "marketing_start_date": "20181127",
+            "sample": false,
+            "description": "270 TABLET in 1 BOTTLE (71610-199-92)",
+            "package_ndc": "71610-199-92"
+          },
+          {
+            "marketing_start_date": "20181127",
+            "sample": false,
+            "description": "75 TABLET in 1 BOTTLE (71610-199-55)",
+            "package_ndc": "71610-199-55"
+          },
+          {
+            "marketing_start_date": "20181127",
+            "sample": false,
+            "description": "60 TABLET in 1 BOTTLE (71610-199-53)",
+            "package_ndc": "71610-199-53"
+          },
+          {
+            "marketing_start_date": "20181127",
+            "sample": false,
+            "description": "45 TABLET in 1 BOTTLE (71610-199-45)",
+            "package_ndc": "71610-199-45"
+          },
+          {
+            "marketing_start_date": "20181127",
+            "sample": false,
+            "description": "30 TABLET in 1 BOTTLE (71610-199-30)",
+            "package_ndc": "71610-199-30"
+          },
+          {
+            "marketing_start_date": "20181127",
+            "sample": false,
+            "description": "20 TABLET in 1 BOTTLE (71610-199-20)",
+            "package_ndc": "71610-199-20"
+          },
+          {
+            "marketing_start_date": "20181127",
+            "sample": false,
+            "description": "15 TABLET in 1 BOTTLE (71610-199-15)",
+            "package_ndc": "71610-199-15"
+          },
+          {
+            "marketing_start_date": "20181127",
+            "sample": false,
+            "description": "10 TABLET in 1 BOTTLE (71610-199-10)",
+            "package_ndc": "71610-199-10"
+          },
+          {
+            "marketing_start_date": "20181127",
+            "sample": false,
+            "description": "120 TABLET in 1 BOTTLE (71610-199-70)",
+            "package_ndc": "71610-199-70"
+          },
+          {
+            "marketing_start_date": "20181127",
+            "sample": false,
+            "description": "90 TABLET in 1 BOTTLE (71610-199-60)",
+            "package_ndc": "71610-199-60"
+          }
+        ],
+        "active_ingredients": [
+          {
+            "strength": ".5 mg/1",
+            "name": "LORAZEPAM"
+          }
+        ],
+        "product_ndc": "71610-199",
+        "finished": true,
+        "spl_id": "adbae6b7-14fd-4ce0-a7eb-2154805a2a16",
+        "pharm_class": [
+          "Benzodiazepine [EPC]",
+          "Benzodiazepines [CS]"
+        ],
+        "application_number": "ANDA203572",
+        "dosage_form": "TABLET",
+        "listing_expiration_date": "20201231",
+        "dea_schedule": "CIV"
+      },
+      {
+        "marketing_start_date": "19980325",
+        "product_type": "HUMAN OTC DRUG",
+        "product_id": "0395-9122_99c588fd-1e4d-0ea0-e053-2a95a90a2e8a",
+        "marketing_category": "OTC MONOGRAPH NOT FINAL",
+        "route": [
+          "TOPICAL"
+        ],
+        "generic_name": "Benzalkonium Chloride",
+        "openfda": {},
+        "brand_name": "Merthiolate",
+        "brand_name_base": "Merthiolate",
+        "labeler_name": "Humco Holding Group, Inc.",
+        "packaging": [
+          {
+            "marketing_start_date": "20171114",
+            "sample": false,
+            "description": "59 mL in 1 BOTTLE (0395-9122-92)",
+            "package_ndc": "0395-9122-92"
+          }
+        ],
+        "active_ingredients": [
+          {
+            "strength": "1.3 mg/mL",
+            "name": "BENZALKONIUM CHLORIDE"
+          }
+        ],
+        "product_ndc": "0395-9122",
+        "finished": true,
+        "spl_id": "99c588fd-1e4d-0ea0-e053-2a95a90a2e8a",
+        "application_number": "part333A",
+        "listing_expiration_date": "20201231",
+        "dosage_form": "LIQUID"
+      },
+      {
+        "marketing_start_date": "20180927",
+        "product_type": "HUMAN PRESCRIPTION DRUG",
+        "product_id": "71610-213_004c75b3-29f0-4e32-82fe-fec4ce0350d3",
+        "marketing_category": "NDA AUTHORIZED GENERIC",
+        "route": [
+          "ORAL"
+        ],
+        "generic_name": "Tadalafil",
+        "openfda": {
+          "spl_set_id": [
+            "1621128d-56e9-48f0-876c-77081daa7f12"
+          ],
+          "manufacturer_name": [
+            "Aphena Pharma Solutions - Tennessee, LLC"
+          ],
+          "unii": [
+            "742SXX0ICT"
+          ],
+          "rxcui": [
+            "402019",
+            "403957"
+          ]
+        },
+        "brand_name": "Tadalafil",
+        "brand_name_base": "Tadalafil",
+        "labeler_name": "Aphena Pharma Solutions - Tennessee, LLC",
+        "packaging": [
+          {
+            "marketing_start_date": "20181228",
+            "sample": false,
+            "description": "12 TABLET, FILM COATED in 1 BOTTLE (71610-213-12)",
+            "package_ndc": "71610-213-12"
+          },
+          {
+            "marketing_start_date": "20181228",
+            "sample": false,
+            "description": "4 TABLET, FILM COATED in 1 BOTTLE (71610-213-04)",
+            "package_ndc": "71610-213-04"
+          }
+        ],
+        "active_ingredients": [
+          {
+            "strength": "20 mg/1",
+            "name": "TADALAFIL"
+          }
+        ],
+        "product_ndc": "71610-213",
+        "finished": true,
+        "spl_id": "004c75b3-29f0-4e32-82fe-fec4ce0350d3",
+        "pharm_class": [
+          "Phosphodiesterase 5 Inhibitor [EPC]",
+          "Phosphodiesterase 5 Inhibitors [MoA]"
+        ],
+        "application_number": "NDA021368",
+        "listing_expiration_date": "20201231",
+        "dosage_form": "TABLET, FILM COATED"
+      },
+      {
+        "marketing_start_date": "20181201",
+        "product_type": "HUMAN OTC DRUG",
+        "product_id": "71610-219_c2ac20c2-20ac-4a0d-86ba-e90c552611ba",
+        "marketing_category": "OTC MONOGRAPH NOT FINAL",
+        "route": [
+          "ORAL"
+        ],
+        "generic_name": "Bisacodyl",
+        "openfda": {
+          "manufacturer_name": [
+            "Aphena Pharma Solutions - Tennessee, LLC"
+          ],
+          "unii": [
+            "10X0709Y6I"
+          ],
+          "rxcui": [
+            "308753"
+          ],
+          "spl_set_id": [
+            "b5e1a7f8-17ef-4d67-aeea-879603f800a5"
+          ],
+          "pharm_class_pe": [
+            "Stimulation Large Intestine Fluid/Electrolyte Secretion [PE]",
+            "Increased Large Intestinal Motility [PE]"
+          ],
+          "pharm_class_epc": [
+            "Stimulant Laxative [EPC]"
+          ],
+          "nui": [
+            "N0000009371",
+            "N0000175812",
+            "N0000009871"
+          ]
+        },
+        "brand_name": "Bisacodyl",
+        "brand_name_base": "Bisacodyl",
+        "labeler_name": "Aphena Pharma Solutions - Tennessee, LLC",
+        "packaging": [
+          {
+            "marketing_start_date": "20190110",
+            "sample": false,
+            "description": "4 TABLET, COATED in 1 BOTTLE, PLASTIC (71610-219-04)",
+            "package_ndc": "71610-219-04"
+          },
+          {
+            "marketing_start_date": "20190221",
+            "sample": false,
+            "description": "8 TABLET, COATED in 1 BOTTLE, PLASTIC (71610-219-08)",
+            "package_ndc": "71610-219-08"
+          },
+          {
+            "marketing_start_date": "20190606",
+            "sample": false,
+            "description": "20 TABLET, COATED in 1 BOTTLE, PLASTIC (71610-219-20)",
+            "package_ndc": "71610-219-20"
+          },
+          {
+            "marketing_start_date": "20190228",
+            "sample": false,
+            "description": "2 TABLET, COATED in 1 BOTTLE, PLASTIC (71610-219-02)",
+            "package_ndc": "71610-219-02"
+          },
+          {
+            "marketing_start_date": "20190121",
+            "sample": false,
+            "description": "3 TABLET, COATED in 1 BOTTLE, PLASTIC (71610-219-03)",
+            "package_ndc": "71610-219-03"
+          }
+        ],
+        "active_ingredients": [
+          {
+            "strength": "5 mg/1",
+            "name": "BISACODYL"
+          }
+        ],
+        "product_ndc": "71610-219",
+        "finished": true,
+        "spl_id": "c2ac20c2-20ac-4a0d-86ba-e90c552611ba",
+        "application_number": "part334",
+        "listing_expiration_date": "20201231",
+        "dosage_form": "TABLET, COATED"
+      }
+    ]
+}
