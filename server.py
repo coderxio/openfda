@@ -10,7 +10,8 @@ class DrugsList(Drugs):
     
     @staticmethod
     def listDrugs(session):
-        return session.query(DrugsList).filter(DrugsList.generic_name == 'lisinopril')
+        return session.query(DrugsList.brand_name) \
+                .filter(DrugsList.brand_name != 'lisinopril').filter(DrugsList.generic_name == 'lisinopril')
 
 class SAEnginePlugin(plugins.SimplePlugin):
     def __init__(self, bus):
@@ -60,9 +61,9 @@ class SATool(cherrypy.Tool):
 class Root():
     @cherrypy.expose
     def index(self):
-        rows = [str(row) for row in DrugsList.listDrugs(cherrypy.request.db)]
+        rows = [str(row[0]) for row in DrugsList.listDrugs(cherrypy.request.db)]
         n1 = '\n'
-        return f"All medications matching lisinopril:\n{n1.join(rows)}"
+        return f"Lisinopril brand names: {n1.join(rows)}"
 
 
 def main():
