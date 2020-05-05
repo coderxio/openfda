@@ -2,7 +2,9 @@ import requests
 import sys
 import json
 from connect_db import Drugs
+from helpers import startLogging
 
+logger = startLogging('load_ndcs')
 
 def add_data(session, data):
     try:
@@ -33,7 +35,7 @@ def add_data(session, data):
         except:
             form = ""
     except:
-        sys.stderr.write(f"JSON failure\n")
+        logger.error(f"JSON failure\n")
         return
     exists = session.query(Drugs).filter(Drugs.generic_name == generic_name)\
                                  .filter(Drugs.brand_name == brand_name)\
@@ -41,11 +43,11 @@ def add_data(session, data):
                                  .filter(Drugs.dosage_form == form)\
                                  .filter(Drugs.pharm_class == classes).scalar()
     if not exists:
-        sys.stdout.write(f"New data added: {generic_name}|{brand_name}|{routes}|{form}\n")
+        logger.info(f"New data added: {generic_name}|{brand_name}|{routes}|{form}\n")
         row = Drugs(generic_name=generic_name, brand_name=brand_name, route=routes, dosage_form=form, pharm_class=classes)
         session.add(row)
     else:
-        sys.stdout.write(f"Data already exists: {generic_name}|{brand_name}\n")
+        logger.warning(f"Data already exists: {generic_name}|{brand_name}\n")
     session.commit()
     return
 
