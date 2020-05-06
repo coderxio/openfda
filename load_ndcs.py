@@ -1,12 +1,29 @@
 import requests
 import sys
 import json
-from connect_db import Drugs, Routes
+from connect_db import Drugs, Routes, ProductTypes
 from helpers import startLogging
 
 logger = startLogging('load_ndcs')
 
-def add_data(session, data):
+def buildProductTypes(session, data):
+    responses = set()
+    try:
+        for item in data['results']:
+            try:
+                responses.add(item['product_type'])
+            except:
+                pass
+    except:
+        logger.error("Failed to load responses table")
+        return
+    logger.debug(f"New data product_type(s): {str(responses)}\n")
+    for item in responses:
+        logger.info(f"New response added: {item}\n")
+        row = ProductTypes(product_type = item)
+        session.add(row)
+
+def addData(session, data):
     try:
         try:
             product_id = data['product_id']
@@ -38,13 +55,17 @@ def add_data(session, data):
             form = data['dosage_form'].lower()[:100]
         except:
             form = ""
+        try:
+            productTypeId = session.query(ProductTypes.id).filter(ProductTypes.product_type == data['product_type'])
+        except:
+            productTypeId = None
     except:
         logger.error(f"JSON failure\n")
         return
     exists = session.query(Drugs).filter(Drugs.product_id == product_id).scalar()
     if not exists:
         logger.info(f"New data added: {generic_name}|{brand_name}|{form}|{classes}|{product_id}\n")
-        row = Drugs(product_id=product_id, generic_name=generic_name, brand_name=brand_name, dosage_form=form, pharm_class=classes)            
+        row = Drugs(product_id=product_id, generic_name=generic_name, brand_name=brand_name, dosage_form=form, pharm_class=classes, product_type = productTypeId)            
         session.add(row)
         for route in routesList:
             logger.info(f"New data added: {generic_name}|{route}\n")
@@ -59,8 +80,12 @@ def add_data(session, data):
 def main(session):
     f = open('data/drug-ndc-20200504.json')
     data = json.load(f)
+
+    # Need improved process to minimze circling through JSON file twice.
+    buildProductTypes(session, data)
     for line in data['results']:
-        add_data(session, line)
+        logger.debug(f"{line}")
+        addData(session, line)
 
 
 if __name__ == "__main__":
