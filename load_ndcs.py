@@ -1,13 +1,18 @@
 import requests
 import sys
 import json
-from connect_db import Drugs
+from connect_db import Drugs, Routes
 from helpers import startLogging
 
 logger = startLogging('load_ndcs')
 
 def add_data(session, data):
     try:
+        try:
+            product_id = data['product_id']
+        except:
+            logger.warning(f"A product ID does not exists for {data['generic_name']}")
+            return
         try:
             generic_name = data['generic_name'].lower()[:300]
         except:
@@ -26,10 +31,9 @@ def add_data(session, data):
         try:
             routesList = []
             for route in data['route']:
-                routesList.append(f"{route}")
-            routes = '|'.join(routesList).lower()[:100]
+                routesList.append(route.lower())
         except:
-            routes = ""
+            routesList = []
         try:
             form = data['dosage_form'].lower()[:100]
         except:
@@ -37,17 +41,17 @@ def add_data(session, data):
     except:
         logger.error(f"JSON failure\n")
         return
-    exists = session.query(Drugs).filter(Drugs.generic_name == generic_name)\
-                                 .filter(Drugs.brand_name == brand_name)\
-                                 .filter(Drugs.route == routes)\
-                                 .filter(Drugs.dosage_form == form)\
-                                 .filter(Drugs.pharm_class == classes).scalar()
+    exists = session.query(Drugs).filter(Drugs.product_id == product_id).scalar()
     if not exists:
-        logger.info(f"New data added: {generic_name}|{brand_name}|{routes}|{form}\n")
-        row = Drugs(generic_name=generic_name, brand_name=brand_name, route=routes, dosage_form=form, pharm_class=classes)
+        logger.info(f"New data added: {generic_name}|{brand_name}|{form}|{classes}|{product_id}\n")
+        row = Drugs(product_id=product_id, generic_name=generic_name, brand_name=brand_name, dosage_form=form, pharm_class=classes)            
         session.add(row)
+        for route in routesList:
+            logger.info(f"New data added: {generic_name}|{route}\n")
+            oral_row = Routes(route=route, dx_route=row)
+            session.add(oral_row)
     else:
-        logger.warning(f"Data already exists: {generic_name}|{brand_name}\n")
+        logger.warning(f"Data already exists: {product_id}|{generic_name}|{brand_name}\n")
     session.commit()
     return
 
