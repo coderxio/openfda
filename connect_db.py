@@ -20,6 +20,7 @@ class Drugs(Base):
     brand_name = Column(String(300))
     pharm_class = Column(String(100))
     dosage_form = Column(String(100))
+    product_type = Column(Integer, ForeignKey('productType.id'))
     routes = relationship("Routes", backref='dx_route')
 
     def __repr__(self):
@@ -40,11 +41,14 @@ class Routes(Base):
     
 
 # Pharmacology Class table
-class PharmClass(Base):
-    __tablename__ = "pharmClass"
+class ProductTypes(Base):
+    __tablename__ = "productType"
 
     id = Column(Integer, primary_key=True)
     product_type = Column(String(30))
+
+    def __repr__(self):
+        return "<ProductTypes(product_type='%s')>" % (self.product_type)
 
 def main():
     # Connect to DB
