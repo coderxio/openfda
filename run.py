@@ -20,7 +20,7 @@ def main():
         logger.error("Second attempt connecting to database\n")
         session = connect_db()
 
-    cherrypy_server()
+    # cherrypy_server()
     load_ndcs(session)
 
 
