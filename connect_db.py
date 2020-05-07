@@ -55,8 +55,15 @@ def main():
     sys.stderr.write("Connecting to the DB")
     engine = create_engine(os.environ.get('DB_URI', 'sqlite:///drugs.db'))
     Base.metadata.create_all(engine)
+
     Session = sessionmaker(bind=engine)
     session = Session()
+
+    # Clear all current tables of information
+    session.query(Drugs).delete()
+    session.query(Routes).delete()
+    session.query(ProductTypes).delete()
+
     return session
 
 if __name__ == "__main__":
