@@ -44,8 +44,8 @@ class Routes(Base):
 class PharmClasses(Base):
     __tablename__ = "pharmClass"
 
-    id = Column(Integer, priimary_key=True)
-    pharm_class = Column(String(50))
+    id = Column(Integer, primary_key=True)
+    pharm_class = Column(String(100))
     drug_id = Column(Integer, ForeignKey('drug.id'))
 
     def __repr__(self):
@@ -72,8 +72,9 @@ def main():
     session = Session()
 
     # Clear all current tables of information
-    session.query(Drugs).delete()
     session.query(Routes).delete()
+    session.query(PharmClasses).delete()
+    session.query(Drugs).delete()
     session.query(ProductTypes).delete()
 
     return session
