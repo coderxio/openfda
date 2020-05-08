@@ -1,7 +1,7 @@
 import requests
 import sys
 import json
-from connect_db import Drugs, Routes, ProductTypes
+from connect_db import Drugs, Routes, ProductTypes, PharmClasses
 from helpers import startLogging
 
 logger = startLogging('load_ndcs')
@@ -42,7 +42,6 @@ def addData(session, data):
             classList = []
             for classItem in data['pharm_class']:
                 classList.append(classItem)
-            classes = '|'.join(classList).lower()[:100]
         except:
             classes = ""
         try:
@@ -69,8 +68,12 @@ def addData(session, data):
         session.add(row)
         for route in routesList:
             logger.info(f"New data added: {generic_name}|{route}\n")
-            oral_row = Routes(route=route, dx_route=row)
-            session.add(oral_row)
+            route_row = Routes(route=route, dx_route=row)
+            session.add(route_row)
+        for pharmClass in classList:
+            logger.info(f"New data added: {generic_name}|{pharmClass}\n")
+            class_row = PharmClasses(pharm_class=pharmClass, dx_pharmClass=row)
+            session.add(class_row)
     else:
         logger.warning(f"Data already exists: {product_id}|{generic_name}|{brand_name}\n")
     session.commit()
