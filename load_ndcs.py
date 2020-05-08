@@ -63,8 +63,8 @@ def addData(session, data):
         return
     exists = session.query(Drugs).filter(Drugs.product_id == product_id).scalar()
     if not exists:
-        logger.info(f"New data added: {generic_name}|{brand_name}|{form}|{classes}|{product_id}\n")
-        row = Drugs(product_id=product_id, generic_name=generic_name, brand_name=brand_name, dosage_form=form, pharm_class=classes, product_type = productTypeId)            
+        logger.info(f"New data added: {generic_name}|{brand_name}|{form}|{product_id}\n")
+        row = Drugs(product_id=product_id, generic_name=generic_name, brand_name=brand_name, dosage_form=form, product_type = productTypeId)            
         session.add(row)
         for route in routesList:
             logger.info(f"New data added: {generic_name}|{route}\n")
