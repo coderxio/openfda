@@ -43,7 +43,7 @@ def addData(session, data):
             for classItem in data['pharm_class']:
                 classList.append(classItem)
         except:
-            classes = ""
+            classList = []
         try:
             routesList = []
             for route in data['route']:
