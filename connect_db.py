@@ -1,9 +1,13 @@
 import requests
+import time
 import sys
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
+from helpers import startLogging
 
+
+logger = startLogging('connect_db')
 
 # Table schema
 Base = declarative_base()
@@ -64,9 +68,25 @@ class ProductTypes(Base):
 
 def main():
     # Connect to DB
-    sys.stderr.write("Connecting to the DB")
-    engine = create_engine('mysql+pymysql://admin:admin@db:3306/drugs')
-    Base.metadata.create_all(engine)
+    db = 'mysql+pymysql://admin:admin@db:3306/drugs'
+
+    # Allow for infinite tries to DB
+    try:
+        logger.debug(f"Attempting to connect to DB: {db}")
+        engine = create_engine(db)
+        Base.metadata.create_all(engine)
+    except:
+        logger.error(f"Failed to connect to the DB: {db}")
+        not_connected = True
+        while not_connected:
+            try:
+                sys.stderr.write("Attempting to connect to DB again")
+                engine = create_engine(db)
+                Base.metadata.create_all(engine)
+                not_connected = False
+            except:
+                time.sleep(10)
+                pass
 
     Session = sessionmaker(bind=engine)
     session = Session()
