@@ -1,3 +1,4 @@
+import os
 import cherrypy
 from cherrypy.process import wspbus, plugins
 from connect_db import Drugs
@@ -7,7 +8,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 class DrugsList(Drugs):
     def __init__(self):
         Drugs.__init__(self)
-    
+
     @staticmethod
     def listDrugs(session):
         return session.query(DrugsList.brand_name) \
@@ -18,15 +19,15 @@ class SAEnginePlugin(plugins.SimplePlugin):
         plugins.SimplePlugin.__init__(self, bus)
         self.sa_engine = None
         self.bus.subscribe("bind", self.bind)
-    
+
     def start(self):
-        self.sa_engine = create_engine('mysql+pymysql://admin:admin@db:3306/drugs')
-    
+        self.sa_engine = create_engine(os.environ.get('DB_URI', 'sqlite:///drugs.db'))
+
     def stop(self):
         if self.sa_engine:
             self.sa_engine.dispose()
             self.sa_engine = None
-    
+
     def bind(self, session):
         session.configure(bind=self.sa_engine)
 
@@ -35,7 +36,7 @@ class SATool(cherrypy.Tool):
         cherrypy.Tool.__init__(self, 'on_start_resource',
                                self.bind_session,
                                priority=20)
-    
+
         self.session = scoped_session(sessionmaker(autoflush=True, autocommit=False))
 
     def _setup(self):

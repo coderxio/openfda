@@ -17,10 +17,11 @@ services:
             - ./data:/data
         command:
             - '--secure-file-priv=/data'
-        
-    
+
     drugs:
         container_name: drugs
+        environment:
+          DB_URI: 'mysql+pymysql://admin:admin@db:3306/drugs'
         build:
             context: .
             dockerfile: Dockerfile
