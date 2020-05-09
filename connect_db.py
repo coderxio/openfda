@@ -31,12 +31,11 @@ class Drugs(Base):
 
 def main():
     # Connect to DB
-    sys.stderr.write("Connecting to the DB")
     settings = load_config()
     if settings == 'yes':
-        engine = create_engine('mysql+pymysql://admin:admin@db:3306/drugs')
+        engine = create_engine('mysql+pymysql://admin:admin@db:3306/drugs')  # connect to Docker MySQL DB
     else:
-        engine = create_engine('sqlite://')
+        engine = create_engine('sqlite://')  # connect to in-memory SQLITE DB
     Base.metadata.create_all(engine)
     Session = sessionmaker(bind=engine)
     session = Session()
