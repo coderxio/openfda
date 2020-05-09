@@ -1,0 +1,36 @@
+version: '3.7'
+
+
+services:
+
+
+    db_drugs:
+        image: mysql:8
+        container_name: db_drugs
+        environment:
+            MYSQL_DATABASE: drugs
+            MYSQL_USER: admin
+            MYSQL_PASSWORD: admin
+            MYSQL_ROOT_PASSWORD: supersecret
+        volumes:
+            - db_open_data:/var/lib/mysql
+            - ./data:/data
+        command:
+            - '--secure-file-priv=/data'
+        
+    
+    drugs:
+        container_name: drugs
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - 8082:8080
+        depends_on:
+            - db_drugs
+        links:
+            - "db_drugs:db"
+
+
+volumes:
+    db_open_data:
