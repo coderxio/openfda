@@ -1,8 +1,16 @@
 import requests
 import sys
+import configparser
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+
+
+# Config settings under [database] section in settings.ini
+def load_config():
+    config = configparser.ConfigParser()
+    config.read('settings.ini')
+    return config['database']['use_docker']
 
 
 # Table schema
@@ -24,7 +32,11 @@ class Drugs(Base):
 def main():
     # Connect to DB
     sys.stderr.write("Connecting to the DB")
-    engine = create_engine('mysql+pymysql://admin:admin@db:3306/drugs')
+    settings = load_config()
+    if settings == 'yes':
+        engine = create_engine('mysql+pymysql://admin:admin@db:3306/drugs')
+    else:
+        engine = create_engine('sqlite://')
     Base.metadata.create_all(engine)
     Session = sessionmaker(bind=engine)
     session = Session()
