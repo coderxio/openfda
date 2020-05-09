@@ -35,7 +35,7 @@ def main():
     if settings == 'yes':
         engine = create_engine('mysql+pymysql://admin:admin@db:3306/drugs')  # connect to Docker MySQL DB
     else:
-        engine = create_engine('sqlite://')  # connect to in-memory SQLITE DB
+        engine = create_engine('sqlite:///data/drugs.db')  # connect to /data/drugs.db SQLITE DB
     Base.metadata.create_all(engine)
     Session = sessionmaker(bind=engine)
     session = Session()

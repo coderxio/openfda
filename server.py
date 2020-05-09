@@ -33,7 +33,7 @@ class SAEnginePlugin(plugins.SimplePlugin):
         if settings == 'yes':
             self.sa_engine = create_engine('mysql+pymysql://admin:admin@db:3306/drugs')
         else:
-            self.sa_engine = create_engine('sqlite://')
+            self.sa_engine = create_engine('sqlite:///data/drugs.db')
     
     def stop(self):
         if self.sa_engine:
