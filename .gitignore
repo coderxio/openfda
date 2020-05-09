@@ -1,2 +1,4 @@
-data/drug-ndc-20200504.json
+data/
 log/
+*.pyc
+*/__pycache__/
