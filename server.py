@@ -1,8 +1,17 @@
 import cherrypy
+import configparser
 from cherrypy.process import wspbus, plugins
 from connect_db import Drugs
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
+
+
+# Config settings under [database] section in settings.ini
+def load_config():
+    config = configparser.ConfigParser()
+    config.read('settings.ini')
+    return config['database']['use_docker']
+
 
 class DrugsList(Drugs):
     def __init__(self):
@@ -20,7 +29,11 @@ class SAEnginePlugin(plugins.SimplePlugin):
         self.bus.subscribe("bind", self.bind)
     
     def start(self):
-        self.sa_engine = create_engine('mysql+pymysql://admin:admin@db:3306/drugs')
+        settings = load_config()
+        if settings == 'yes':
+            self.sa_engine = create_engine('mysql+pymysql://admin:admin@db:3306/drugs')
+        else:
+            self.sa_engine = create_engine('sqlite://')
     
     def stop(self):
         if self.sa_engine:
