@@ -21,9 +21,8 @@ def main():
         logger.error("Second attempt connecting to database\n")
         session = connect_db()
 
-    cherrypy_server()
     load_ndcs(session)
-
+    cherrypy_server()
 
 if __name__ == "__main__":
     try:
