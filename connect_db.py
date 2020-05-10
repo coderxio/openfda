@@ -1,3 +1,4 @@
+import os
 import requests
 import sys
 from sqlalchemy import create_engine, Column, Integer, String
@@ -24,7 +25,7 @@ class Drugs(Base):
 def main():
     # Connect to DB
     sys.stderr.write("Connecting to the DB")
-    engine = create_engine('mysql+pymysql://admin:admin@db:3306/drugs')
+    engine = create_engine(os.environ.get('DB_URI', 'sqlite:///drugs.db'))
     Base.metadata.create_all(engine)
     Session = sessionmaker(bind=engine)
     session = Session()
