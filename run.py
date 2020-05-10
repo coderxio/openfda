@@ -10,7 +10,6 @@ logger = startLogging('run')
 
 def main():
     # Allow the DB to set up completely.
-    time.sleep(15)
     try:
         # Grab drug classes
         logger.debug("Connecting to database\n")
