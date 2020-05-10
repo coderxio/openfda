@@ -80,9 +80,19 @@ def addData(session, data):
     return
 
 
+def clear_tables(session):
+    # Clear all current tables of information
+    session.query(Routes).delete()
+    session.query(PharmClasses).delete()
+    session.query(Drugs).delete()
+    session.query(ProductTypes).delete()
+
+
 def main(session):
     f = open('data/drug-ndc-20200504.json')
     data = json.load(f)
+
+    # Need a flag / config / etc. to drop tables on demand for rebuild.
 
     # Need improved process to minimze circling through JSON file twice.
     buildProductTypes(session, data)

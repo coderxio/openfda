@@ -72,12 +72,6 @@ def main():
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    # Clear all current tables of information
-    session.query(Routes).delete()
-    session.query(PharmClasses).delete()
-    session.query(Drugs).delete()
-    session.query(ProductTypes).delete()
-
     return session
 
 if __name__ == "__main__":
