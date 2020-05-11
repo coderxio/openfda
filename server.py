@@ -1,4 +1,5 @@
 import os
+import re
 import cherrypy
 from cherrypy.process import wspbus, plugins
 from connect_db import Drugs
@@ -10,9 +11,9 @@ class DrugsList(Drugs):
         Drugs.__init__(self)
 
     @staticmethod
-    def listDrugs(session):
+    def findBrandName(session, genericName):
         return session.query(DrugsList.brand_name) \
-                .filter(DrugsList.brand_name != 'lisinopril').filter(DrugsList.generic_name == 'lisinopril')
+                .filter(DrugsList.generic_name.like('%' + genericName + '%'))
 
 class SAEnginePlugin(plugins.SimplePlugin):
     def __init__(self, bus):
@@ -60,11 +61,20 @@ class SATool(cherrypy.Tool):
 
 
 class Root():
+    def _cp_dispatch(self, vpath):
+        if len(vpath) == 1:
+            cherrypy.request.params['genericName'] = vpath.pop()
+            return self
+
     @cherrypy.expose
-    def index(self):
-        rows = [str(row[0]) for row in DrugsList.listDrugs(cherrypy.request.db)]
-        n1 = '\n'
-        return f"Lisinopril brand names: {n1.join(rows)}"
+    def index(self, genericName):
+        rows = set([str(row[0]) for row in DrugsList.findBrandName(cherrypy.request.db, genericName)])
+        output = []
+        for item in rows:
+            match = re.search(rf'\b{genericName}\b', item)
+            if match is None:
+                output.append(item)
+        return f"{genericName}: {', '.join(output)}"
 
 
 def main():
