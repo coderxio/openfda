@@ -1,10 +1,15 @@
 import requests
 import sys
 import json
-from connect_db import Drugs, Routes, ProductTypes, PharmClasses
-from helpers import startLogging
+from load_data.models import Drugs, Routes, ProductTypes, PharmClasses
+from helpers.helpers import startLogging
+from pathlib import Path
 
 logger = startLogging('load_ndcs')
+
+def find_json():
+    p = Path('.')
+
 
 def buildProductTypes(session, data):
     responses = set()
@@ -89,7 +94,9 @@ def clear_tables(session):
 
 
 def main(session):
-    f = open('data/drug-ndc-20200504.json')
+    p = Path.cwd()
+    p = (p / 'data')
+    f = open(p / 'drug-ndc.json')
     data = json.load(f)
 
     # Need a flag / config / etc. to drop tables on demand for rebuild.

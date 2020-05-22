@@ -1,17 +1,14 @@
 import time
 import sys
-from load_ndcs import main as load_ndcs
-from connect_db import main as connect_db
-from server import main as cherrypy_server
-from helpers import startLogging
+from load_data.load_ndcs import main as load_ndcs
+from load_data.connect_db import main as connect_db
+from helpers.helpers import startLogging
 
 logger = startLogging('run')
 
 
 def main():
-    # Allow the DB to set up completely.
     try:
-        # Grab drug classes
         logger.debug("Connecting to database\n")
         session = connect_db()
     except:
@@ -20,7 +17,6 @@ def main():
         logger.error("Second attempt connecting to database\n")
         session = connect_db()
 
-    cherrypy_server()
     load_ndcs(session)
 
 

@@ -1,10 +1,6 @@
-import os
-import requests
-import sys
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
-
 
 # Table schema
 Base = declarative_base()
@@ -61,18 +57,3 @@ class ProductTypes(Base):
 
     def __repr__(self):
         return "<ProductTypes(product_type='%s')>" % (self.product_type)
-
-
-def main():
-    # Connect to DB
-    sys.stderr.write("Connecting to the DB")
-    engine = create_engine(os.environ.get('DB_URI', 'sqlite:///drugs.db'))
-    Base.metadata.create_all(engine)
-
-    Session = sessionmaker(bind=engine)
-    session = Session()
-
-    return session
-
-if __name__ == "__main__":
-    main()
