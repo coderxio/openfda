@@ -4,6 +4,7 @@ import cherrypy
 from cherrypy.process import wspbus, plugins
 from load_data.models import Drugs
 from sqlalchemy import create_engine
+from pathlib import Path
 from sqlalchemy.orm import sessionmaker, scoped_session
 
 from helpers.helpers import startLogging
@@ -26,7 +27,10 @@ class SAEnginePlugin(plugins.SimplePlugin):
         self.bus.subscribe("bind", self.bind)
 
     def start(self):
-        self.sa_engine = create_engine(os.environ.get('DB_URI', '../../sqlite:///drugs.db'))
+        p = Path.cwd()
+        db = f"sqlite:///{p.parent / 'data'}/drugs.db"
+        logger.debug(db)
+        self.sa_engine = create_engine(os.environ.get('DB_URI', db))
 
     def stop(self):
         if self.sa_engine:
