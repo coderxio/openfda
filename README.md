@@ -15,5 +15,5 @@
 
 ## Run in docker
 1. First run to load DB: `docker-compose up --build`
-2. Once DB created: `docker-compose -f docker-compose.prod.yml --build`
+2. Once DB created: `docker-compose -f docker-compose.prod.yml up --build`
 3. Destroy entire build, including DB: `docker-compose down -v`
