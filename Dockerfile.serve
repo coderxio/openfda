@@ -3,7 +3,7 @@ LABEL maintainer="Caleb Dunn"
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
-COPY ./app /app
+COPY ./app .
 EXPOSE 8080/tcp
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF8
