@@ -7,9 +7,6 @@ from pathlib import Path
 
 logger = startLogging('load_ndcs')
 
-def find_json():
-    p = Path('.')
-
 
 def buildProductTypes(session, data):
     responses = set()
