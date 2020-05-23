@@ -16,7 +16,7 @@ def startLogging(logger_name):
     formatter = logging.Formatter('[%(asctime)s] p%(process)s {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s','%Y/%m/%d %H:%M:%S')
     logger.setLevel(logging.DEBUG)
     # enable file logging
-    log_filename = datetime.datetime.now().strftime("%y%m%d_%H%M%S_") + logger_name + '.log'
+    log_filename = datetime.datetime.now().strftime("%y%m%d") + logger_name + '.log'
     filehandler = logging.FileHandler(LOG_DIR / log_filename)
     filehandler.setFormatter(formatter)
     logger.addHandler(filehandler)
