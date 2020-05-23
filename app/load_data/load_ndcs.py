@@ -92,8 +92,7 @@ def clear_tables(session):
 
 def main(session):
     p = Path.cwd()
-    p = (p / 'data')
-    f = open(p / 'drug-ndc.json')
+    f = open(p.parent / 'data' / 'drug-ndc.json')
     data = json.load(f)
 
     # Need a flag / config / etc. to drop tables on demand for rebuild.
