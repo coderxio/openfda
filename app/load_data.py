@@ -3,6 +3,7 @@ import sys
 from load_data.load_ndcs import main as load_ndcs
 from load_data.connect_db import main as connect_db
 from helpers.helpers import startLogging
+import get_data
 
 logger = startLogging('run')
 
