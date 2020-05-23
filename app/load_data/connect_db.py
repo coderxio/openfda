@@ -13,7 +13,6 @@ logger = startLogging('connect_db')
 def main():
     # Connect to DB
     p = Path.cwd()
-    db = f"sqlite:///{p.parent / 'data'}/drugs.db"
     logger.debug(db)
     engine = create_engine(os.environ.get('DB_URI', db))
     Base.metadata.create_all(engine)
