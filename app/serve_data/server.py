@@ -2,9 +2,14 @@ import os
 import re
 import cherrypy
 from cherrypy.process import wspbus, plugins
-from connect_db import Drugs
+from load_data.models import Drugs
 from sqlalchemy import create_engine
+from pathlib import Path
 from sqlalchemy.orm import sessionmaker, scoped_session
+
+from helpers.helpers import startLogging
+
+logger = startLogging('server')
 
 class DrugsList(Drugs):
     def __init__(self):
@@ -22,7 +27,9 @@ class SAEnginePlugin(plugins.SimplePlugin):
         self.bus.subscribe("bind", self.bind)
 
     def start(self):
-        self.sa_engine = create_engine(os.environ.get('DB_URI', 'sqlite:///drugs.db'))
+        p = Path.cwd()
+        db = f"sqlite:///{p.parent / 'data'}/drugs.db"
+        self.sa_engine = create_engine(os.environ.get('DB_URI', db))
 
     def stop(self):
         if self.sa_engine:
@@ -63,14 +70,16 @@ class SATool(cherrypy.Tool):
 class Root():
     def _cp_dispatch(self, vpath):
         if len(vpath) == 2:
-            cherrypy.request.params['root'] = vpath.pop()
             cherrypy.request.params['genericName'] = vpath.pop()
+            cherrypy.request.params['root'] = vpath.pop()
             return self
 
     @cherrypy.expose
     def index(self, root, genericName):
+        logger.debug(root)
         if root.lower() == 'generic':
             rows = set([str(row[0]) for row in DrugsList.findBrandName(cherrypy.request.db, genericName)])
+            logger.debug(root + ": " + genericName)
             output = []
             for item in rows:
                 match = re.search(rf'\b{genericName}\b', item)

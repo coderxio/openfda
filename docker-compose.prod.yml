@@ -17,20 +17,6 @@ services:
             - ./data:/data
         command:
             - '--secure-file-priv=/data'
-
-    load_drugs:
-        container_name: load_drugs
-        environment:
-          DB_URI: 'mysql+pymysql://admin:admin@db:3306/drugs'
-        build:
-            context: .
-            dockerfile: Dockerfile.load
-        depends_on:
-            - db_drugs
-        links:
-            - "db_drugs:db"
-        volumes:
-            - ./data:/data
         
     serve_drugs:
         container_name: serve_drugs
