@@ -21,9 +21,11 @@ def buildProductTypes(session, data):
         return
     logger.debug(f"New data product_type(s): {str(responses)}\n")
     for item in responses:
-        logger.info(f"New response added: {item}\n")
-        row = ProductTypes(product_type = item)
-        session.add(row)
+        exists = session.query(ProductTypes).filter(ProductTypes.product_type == item).scalar()
+        if not exists:
+            logger.info(f"New response added: {item}\n")
+            row = ProductTypes(product_type = item)
+            session.add(row)
 
 def addData(session, data):
     try:
@@ -92,7 +94,7 @@ def clear_tables(session):
 
 def main(session):
     p = Path.cwd()
-    f = open(p.parent / 'data' / 'drug-ndc.json')
+    f = open(p / 'data' / 'drug-ndc.json')
     data = json.load(f)
 
     # Need a flag / config / etc. to drop tables on demand for rebuild.
