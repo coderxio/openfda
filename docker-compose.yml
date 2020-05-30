@@ -30,7 +30,7 @@ services:
         links:
             - "db_drugs:db"
         volumes:
-            - ./data:/data
+            - ./data:/app/data
         
     serve_drugs:
         container_name: serve_drugs
