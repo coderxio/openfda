@@ -2,77 +2,57 @@
 """apps.utils.config: imports and finalize config.yml"""
 
 from pathlib import Path
-import re
 import glob
+import yaml
 import os
 
-# third-party
-import yaml
-
-class Config:
+class PyVar(yaml.YAMLObject):
     """
-    a class that:
-    1) loads yml file on initialization
-    2) allows injecting python code to the config dictionary
-    3) replaces yml references with their values
+    a class to create a custom !PY tag in yaml
+    The !PY tag allows calling python code stored in a dictionary
     """
-    def __init__(self,value=Path(__file__).resolve(strict=True).parent.parent.absolute() / "config.yml"):
-        # config.yml location
-        self.yml_config_path = value
-        self.configs = {}
-        self.load_yaml()
+    # this is a PYYAML requirment and is case sensitive
+    yaml_tag = u'!PY'
 
-    def load_yaml(self):
+    def __init__(self):
         """
-        puts config.yml content in a dictionary
+        starts with empty dictionary
         """
-        self.configs = yaml.safe_load(open(self.yml_config_path))
-
-    def replace_dynamic(self,key,new_value):
-        """
-        replace any mention of <dynamic> for the key specificed with a new value
-        """
-        self.configs[key] = new_value if self.configs[key] == '<dynamic>' else self.configs[key]
-
-    def replace_references(self):
-        """
-        replace any mention of <variable> with its value
-        """
-        # loop through each key value pair and replace <refernces> with their values.
-        for key, value in self.configs.items():
-            if isinstance(value, str):
-                vars_to_replace = re.findall(r'(?=\<[A-z]+\>)(?!\<dynamic\>)([A-z><]+)',value)
-                for var in vars_to_replace:
-                    if isinstance(self.configs[var[1:-1]], Path):
-                        self.configs[key] = Path(value.replace(var,str(self.configs[var[1:-1]])))
-                        # make directories if they do not exist
-                        Path(value.replace(var,str(self.configs[var[1:-1]]))).mkdir(parents=True, exist_ok=True)
-                    else:
-                        self.configs[key] = value.replace(var,self.configs[var[1:-1]])
+        self.py_dict = {}
 
     def get(self,key):
         """
-        return the value for they key requested
+        retrieves a value from the dictionary
         """
-        return self.configs[key]
+        return self.py_dict[key]
 
-    def all(self):
+    def add(self,key,value):
         """
-        returns all configs
+        adds a new key value pair to a dictionary
         """
-        return self.configs
+        self.py_dict[key] = value
 
-# initiate config
-config = Config()
-# get the realtive path and assign it to base_dir
-config.replace_dynamic('base_dir',Path(__file__).resolve(strict=True).parent.parent.parent.absolute())
-# subsitute all references with their values
-config.replace_references()
-# get the latest json file
-config.replace_dynamic('json_file_name',os.path.basename(max(glob.glob(str(config.get('data_dir')) + '/*.json'), key=os.path.getctime)))
 
+# construct all they key value pairs that can be referenced by the yaml file
+# creating a function like this is required for yaml.SafeLoader.add_constructor
+def yaml_construct(loader,node):
+    c = PyVar()
+    ## start adding python variables here
+    c.add('base_dir',Path(__file__).resolve(strict=True).parent.parent.parent.absolute())
+    c.add('app_dir', c.get('base_dir') / 'app')
+    c.add('data_dir', c.get('app_dir') / 'data')
+    c.add('log_dir', c.get('app_dir') / 'log')
+    c.add('json_file_name',os.path.basename(max(glob.glob(str(c.get('data_dir')) + '/*.json'), key=os.path.getctime)))
+    return c.get(node.value)
+
+# Required for safe_load
+yaml.SafeLoader.add_constructor('!PY', yaml_construct)
+
+# config.yml location
+configyml_path = Path(__file__).resolve(strict=True).parent.parent.absolute() / "config.yml"
+
+# load config.yml
+config = yaml.safe_load(open(configyml_path))
 
 if __name__ == "__main__":
-    print(config.all())
-else:
-    config = config.all()
+    print(config)

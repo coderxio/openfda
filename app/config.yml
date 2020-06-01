@@ -1,11 +1,11 @@
 app_name: OpenFDA
 secret_key: a passphrase for peppering
-base_dir: <dynamic>
-app_dir: <base_dir>/app
-data_dir: <app_dir>/data
-log_dir: <app_dir>/log
+base_dir: !PY base_dir
+app_dir: !PY app_dir
+data_dir: !PY data_dir
+log_dir: !PY log_dir
 fda_data_url: https://download.open.fda.gov/drug/ndc/drug-ndc-0001-of-0001.json.zip
 server: 
     host: 0.0.0.0
 sqllite_db_name: drugs.db
-json_file_name: <dynamic>
+json_file_name: !PY json_file_name
