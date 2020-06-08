@@ -6,6 +6,7 @@ from db.models import Drugs
 
 logger = startLogging('server')
 
+
 class DrugsList(Drugs):
     def __init__(self):
         Drugs.__init__(self)
@@ -14,7 +15,6 @@ class DrugsList(Drugs):
     def findBrandName(session, genericName):
         return session.query(DrugsList.brand_name) \
             .filter(DrugsList.generic_name.like(f'%{genericName}%'))
-
 
 
 class Root():
