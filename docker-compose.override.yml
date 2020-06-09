@@ -16,6 +16,8 @@ services:
     environment:
       DB_URI: 'mysql+pymysql://admin:admin@db:3306/drugs'
     command: python app/run.py
+    volumes:
+      - ./openfda:/openfda
     ports:
       - 8080:8080
 
