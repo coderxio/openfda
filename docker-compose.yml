@@ -1,50 +1,13 @@
 version: '3.7'
 
-
+# Base docker compose file, docker-compose.override will automatically be read and merged with this file
 services:
 
+  db:
+    image: mysql:8
 
-    db_drugs:
-        image: mysql:8
-        container_name: db_drugs
-        environment:
-            MYSQL_DATABASE: drugs
-            MYSQL_USER: admin
-            MYSQL_PASSWORD: admin
-            MYSQL_ROOT_PASSWORD: supersecret
-        volumes:
-            - db_open_data:/var/lib/mysql
-            - ./data:/data
-        command:
-            - '--secure-file-priv=/data'
-
-    load_drugs:
-        container_name: load_drugs
-        environment:
-          DB_URI: 'mysql+pymysql://admin:admin@db:3306/drugs'
-        build:
-            context: .
-            dockerfile: Dockerfile.load
-        depends_on:
-            - db_drugs
-        links:
-            - "db_drugs:db"
-        volumes:
-            - ./data:/app/data
-        
-    serve_drugs:
-        container_name: serve_drugs
-        environment:
-          DB_URI: 'mysql+pymysql://admin:admin@db:3306/drugs'
-        build:
-            context: .
-            dockerfile: Dockerfile.serve
-        depends_on:
-            - db_drugs
-        links:
-            - "db_drugs:db"
-        ports:
-            - 8082:8080
-
-volumes:
-    db_open_data:
+  api:
+    build:
+      context: ./openfda
+    depends_on:
+      - db
