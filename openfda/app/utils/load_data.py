@@ -1,6 +1,7 @@
 import requests
 import sys
 import json
+import time
 from pathlib import Path
 from db.models import Drugs, Routes, ProductTypes, PharmClasses
 from db.connect import connection
@@ -28,60 +29,68 @@ def buildProductTypes(session, data):
             row = ProductTypes(product_type = item)
             session.add(row)
 
-def addData(session, data):
-    try:
+
+def buildDrugs(session, drugs_data):
+    start = time.process_time()
+    objects = []
+    product_ids = []
+    for data in drugs_data['results']:
         try:
-            product_id = data['product_id']
+            try:
+                product_id = data['product_id']
+            except:
+                logger.warning(f"A product ID does not exists for {data['generic_name']}")
+                return
+            try:
+                generic_name = data['generic_name'].lower()[:300]
+            except:
+                generic_name = ""
+            try:
+                brand_name = data['brand_name'].lower()[:300]
+            except:
+                brand_name = ""
+            try:
+                classList = []
+                for classItem in data['pharm_class']:
+                    classList.append(classItem)
+            except:
+                classList = []
+            try:
+                routesList = []
+                for route in data['route']:
+                    routesList.append(route.lower())
+            except:
+                routesList = []
+            try:
+                form = data['dosage_form'].lower()[:100]
+            except:
+                form = ""
+            try:
+                productTypeId = session.query(ProductTypes.id).filter(ProductTypes.product_type == data['product_type'])
+            except:
+                productTypeId = None
         except:
-            logger.warning(f"A product ID does not exists for {data['generic_name']}")
+            logger.error(f"JSON failure\n")
             return
-        try:
-            generic_name = data['generic_name'].lower()[:300]
-        except:
-            generic_name = ""
-        try:
-            brand_name = data['brand_name'].lower()[:300]
-        except:
-            brand_name = ""
-        try:
-            classList = []
-            for classItem in data['pharm_class']:
-                classList.append(classItem)
-        except:
-            classList = []
-        try:
-            routesList = []
-            for route in data['route']:
-                routesList.append(route.lower())
-        except:
-            routesList = []
-        try:
-            form = data['dosage_form'].lower()[:100]
-        except:
-            form = ""
-        try:
-            productTypeId = session.query(ProductTypes.id).filter(ProductTypes.product_type == data['product_type'])
-        except:
-            productTypeId = None
-    except:
-        logger.error(f"JSON failure\n")
-        return
-    exists = session.query(Drugs).filter(Drugs.product_id == product_id).scalar()
-    if not exists:
-        logger.info(f"New data added: {generic_name}|{brand_name}|{form}|{product_id}\n")
-        row = Drugs(product_id=product_id, generic_name=generic_name, brand_name=brand_name, dosage_form=form, product_type = productTypeId)            
-        session.add(row)
-        for route in routesList:
-            logger.info(f"New data added: {generic_name}|{route}\n")
-            route_row = Routes(route=route, dx_route=row)
-            session.add(route_row)
-        for pharmClass in classList:
-            logger.info(f"New data added: {generic_name}|{pharmClass}\n")
-            class_row = PharmClasses(pharm_class=pharmClass, dx_pharmClass=row)
-            session.add(class_row)
-    else:
-        logger.warning(f"Data already exists: {product_id}|{generic_name}|{brand_name}\n")
+        # exists = session.query(Drugs).filter(Drugs.product_id == product_id).scalar()
+        if product_id not in product_ids:
+            product_ids.append(product_id)
+            logger.info(f"New data added: {generic_name}|{brand_name}|{form}|{product_id}\n")
+            row = Drugs(product_id=product_id, generic_name=generic_name, brand_name=brand_name, dosage_form=form, product_type = productTypeId)            
+            objects.append(row)
+            for route in routesList:
+                logger.info(f"New data added: {generic_name}|{route}\n")
+                route_row = Routes(route=route, dx_route=row)
+                objects.append(route_row)
+            for pharmClass in classList:
+                logger.info(f"New data added: {generic_name}|{pharmClass}\n")
+                class_row = PharmClasses(pharm_class=pharmClass, dx_pharmClass=row)
+                objects.append(class_row)
+        else:
+            logger.warning(f"Data already exists: {product_id}|{generic_name}|{brand_name}\n")
+    session.add_all(objects)
     session.commit()
+    logger.error(time.process_time() - start)
     return
 
 
@@ -102,9 +111,8 @@ def main(session):
 
     # Need improved process to minimze circling through JSON file twice.
     buildProductTypes(session, data)
-    for line in data['results']:
-        logger.debug(f"{line}")
-        addData(session, line)
+    buildDrugs(session, data)
+    f.close()
 
 
 if __name__ == "__main__":
