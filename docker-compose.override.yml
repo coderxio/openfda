@@ -1,0 +1,25 @@
+version: '3.7'
+
+# Development docker compose setup
+services:
+
+  db:
+    environment:
+        MYSQL_DATABASE: drugs
+        MYSQL_USER: admin
+        MYSQL_PASSWORD: admin
+        MYSQL_ROOT_PASSWORD: supersecret
+    volumes:
+      - db_data:/var/lib/mysql
+
+  api:
+    environment:
+      DB_URI: 'mysql+pymysql://admin:admin@db:3306/drugs'
+    command: python app/run.py
+    volumes:
+      - ./openfda:/openfda
+    ports:
+      - 8080:8080
+
+volumes:
+  db_data:

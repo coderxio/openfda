@@ -11,7 +11,6 @@ class Drugs(Base):
 
     id = Column(Integer, primary_key=True)
     product_id = Column(String(100))
-    
     generic_name = Column(String(300))
     brand_name = Column(String(300))
     pharm_class = Column(String(100))
@@ -24,7 +23,6 @@ class Drugs(Base):
         return "<Drugs(generic_name='%s', brand_name='%s', pharm_class='%s')>" % (
                     self.generic_name, self.brand_name, self.pharm_class)
 
-
 # Routes table
 class Routes(Base):
     __tablename__ = "route"
@@ -35,7 +33,6 @@ class Routes(Base):
 
     def __repr__(self):
         return "<Routes(route='%s')>" % (self.route)
-    
 
 # Pharmacology Class table
 class PharmClasses(Base):

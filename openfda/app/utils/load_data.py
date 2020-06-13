@@ -1,9 +1,10 @@
 import requests
 import sys
 import json
-from load_data.models import Drugs, Routes, ProductTypes, PharmClasses
-from helpers.helpers import startLogging
 from pathlib import Path
+from db.models import Drugs, Routes, ProductTypes, PharmClasses
+from db.connect import connection
+from utils.log import startLogging
 
 logger = startLogging('load_ndcs')
 
@@ -108,6 +109,6 @@ def main(session):
 
 if __name__ == "__main__":
     try:
-        main()
+        main(connection())
     except Exception as e:
         logger.exception('Unhandled Exception')
