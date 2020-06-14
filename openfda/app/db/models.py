@@ -16,7 +16,9 @@ class Drugs(Base):
     pharm_class = Column(String(100))
     dosage_form = Column(String(100))
     product_type = Column(Integer, ForeignKey('productType.id'))
-    routes = relationship("Routes", backref='dx_route')
+    route1 = Column(Integer, ForeignKey('route.id'))
+    route2 = Column(Integer, ForeignKey('route.id'))
+    route3 = Column(Integer, ForeignKey('route.id'))
     pharm_classes = relationship("PharmClasses", backref="dx_pharmClass")
 
     def __repr__(self):
@@ -29,7 +31,7 @@ class Routes(Base):
 
     id = Column(Integer, primary_key=True)
     route = Column(String(100))
-    drug_id = Column(Integer, ForeignKey('drug.id'))
+    
 
     def __repr__(self):
         return "<Routes(route='%s')>" % (self.route)
