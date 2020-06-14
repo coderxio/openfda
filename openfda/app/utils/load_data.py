@@ -128,7 +128,7 @@ def buildDrugs(session, drugs_data):
     start = time.process_time()
     session.add_all(objects)
     session.commit()
-    logger.debug(F"Commit drugs db: {str(time.process_time() - start)}")
+    logger.info(f"Commit drugs db: {str(time.process_time() - start)}")
     return
 
 
@@ -150,11 +150,13 @@ def main(session):
     # Need improved process to minimze circling through JSON file twice.
     start = time.process_time()
     buildProductTypes(session, data)
-    logger.debug(F"Add product types: {str(time.process_time() - start)}")
+    logger.info(f"Add product types: {str(time.process_time() - start)}")
     start = time.process_time()
     buildRouteTypes(session, data)
-    logger.debug(F"Add routes: {str(time.process_time() - start)}")
+    logger.info(f"Add routes: {str(time.process_time() - start)}")
+    start= time.process_time()
     buildDrugs(session, data)
+    logger.info(f"Add drugs information: {str(time.process_time() - start)}")
     f.close()
 
 
