@@ -29,9 +29,29 @@ def buildProductTypes(session, data):
             row = ProductTypes(product_type = item)
             session.add(row)
 
+def buildRouteTypes(session, data):
+    routes = set()
+    try:
+        for item in data['results']:
+            try:
+                for route in item['route']:
+                    routes.add(route)
+            except:
+                pass
+    except:
+        logger.error("Failed to load routes table")
+        return
+    logger.debug(f"New data route(s): {str(routes)}\n")
+    for item in routes:
+        logger.debug(item)
+        exists = session.query(Routes).filter(Routes.route == item).scalar()
+        if not exists:
+            logger.info(f"New response added: {item}\n")
+            row = Routes(route = item)
+            session.add(row)
+
 
 def buildDrugs(session, drugs_data):
-    start = time.process_time()
     objects = []
     product_ids = []
     for data in drugs_data['results']:
@@ -58,7 +78,8 @@ def buildDrugs(session, drugs_data):
             try:
                 routesList = []
                 for route in data['route']:
-                    routesList.append(route.lower())
+                    route_id = session.query(Routes.id).filter(Routes.route == route)
+                    routesList.append(route_id)
             except:
                 routesList = []
             try:
@@ -75,22 +96,39 @@ def buildDrugs(session, drugs_data):
         # exists = session.query(Drugs).filter(Drugs.product_id == product_id).scalar()
         if product_id not in product_ids:
             product_ids.append(product_id)
-            logger.info(f"New data added: {generic_name}|{brand_name}|{form}|{product_id}\n")
-            row = Drugs(product_id=product_id, generic_name=generic_name, brand_name=brand_name, dosage_form=form, product_type = productTypeId)            
+            logger.debug(f"New data added: {generic_name}|{brand_name}|{form}|{product_id}\n")
+            if len(routesList) == 3:
+                route1 = routesList[0]
+                route2 = routesList[1]
+                route3 = routesList[2]
+            elif len(routesList) == 2:
+                route1 = routesList[0]
+                route2 = routesList[1]
+                route3 = None
+            elif len(routesList) == 1:
+                route1 = routesList[0]
+                route2 = None
+                route3 = None
+            else:
+                route1 = None
+                route2 = None
+                route3 = None
+            row = Drugs(product_id=product_id, generic_name=generic_name, brand_name=brand_name, dosage_form=form, route1=route1, route2=route2, route3=route3, product_type=productTypeId)            
             objects.append(row)
-            for route in routesList:
-                logger.info(f"New data added: {generic_name}|{route}\n")
-                route_row = Routes(route=route, dx_route=row)
-                objects.append(route_row)
+            # for route in routesList:
+            #     logger.info(f"New data added: {generic_name}|{route}\n")
+            #     route_row = Routes(route=route, dx_route=row)
+            #     objects.append(route_row)
             for pharmClass in classList:
-                logger.info(f"New data added: {generic_name}|{pharmClass}\n")
+                logger.debug(f"New data added: {generic_name}|{pharmClass}\n")
                 class_row = PharmClasses(pharm_class=pharmClass, dx_pharmClass=row)
                 objects.append(class_row)
         else:
             logger.warning(f"Data already exists: {product_id}|{generic_name}|{brand_name}\n")
+    start = time.process_time()
     session.add_all(objects)
     session.commit()
-    logger.error(time.process_time() - start)
+    logger.debug(F"Commit drugs db: {str(time.process_time() - start)}")
     return
 
 
@@ -110,7 +148,12 @@ def main(session):
     # Need a flag / config / etc. to drop tables on demand for rebuild.
 
     # Need improved process to minimze circling through JSON file twice.
+    start = time.process_time()
     buildProductTypes(session, data)
+    logger.debug(F"Add product types: {str(time.process_time() - start)}")
+    start = time.process_time()
+    buildRouteTypes(session, data)
+    logger.debug(F"Add routes: {str(time.process_time() - start)}")
     buildDrugs(session, data)
     f.close()
 
