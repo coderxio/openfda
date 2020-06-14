@@ -25,7 +25,7 @@ def buildProductTypes(session, data):
     for item in responses:
         exists = session.query(ProductTypes).filter(ProductTypes.product_type == item).scalar()
         if not exists:
-            logger.info(f"New response added: {item}\n")
+            logger.debug(f"New response added: {item}\n")
             row = ProductTypes(product_type = item)
             session.add(row)
 
@@ -46,7 +46,7 @@ def buildRouteTypes(session, data):
         logger.debug(item)
         exists = session.query(Routes).filter(Routes.route == item).scalar()
         if not exists:
-            logger.info(f"New response added: {item}\n")
+            logger.debug(f"New response added: {item}\n")
             row = Routes(route = item)
             session.add(row)
 
