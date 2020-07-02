@@ -14,7 +14,7 @@ def startLogging(logger_name):
     Path(LOG_DIR).mkdir(parents=True, exist_ok=True)
     logger = logging.getLogger(logger_name)
     formatter = logging.Formatter('[%(asctime)s] p%(process)s {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s','%Y/%m/%d %H:%M:%S')
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.INFO)
     # enable file logging
     log_filename = datetime.datetime.now().strftime("%y%m%d_") + logger_name + '.log'
     filehandler = logging.FileHandler(LOG_DIR / log_filename)
